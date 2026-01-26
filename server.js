@@ -33,9 +33,7 @@ const groq = new Groq({
   apiKey: GROQ_API_KEY,
 });
 
-/* =========================
-   MIDDLEWARE
-========================= */
+/*   MIDDLEWARE*/
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -44,9 +42,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-/* =========================
-   DATABASE
-========================= */
+/*  DATABASE */
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -55,9 +51,7 @@ mongoose
     process.exit(1);
   });
 
-/* =========================
-   MODELS
-========================= */
+/* schema for signup*/
 const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
@@ -67,6 +61,7 @@ const UserSchema = new mongoose.Schema({
   password: String,
 });
 
+/* schema for assessment*/
 const AssessmentSchema = new mongoose.Schema({
   userId: mongoose.Schema.Types.ObjectId,
   answers: Object,
@@ -79,9 +74,7 @@ const AssessmentSchema = new mongoose.Schema({
 const User = mongoose.model("User", UserSchema);
 const Assessment = mongoose.model("Assessment", AssessmentSchema);
 
-/* =========================
-   AUTH HELPERS
-========================= */
+
 function signToken(user) {
   return jwt.sign(
     { _id: user._id, name: user.name, email: user.email },
@@ -102,9 +95,6 @@ function isAuthenticated(req, res, next) {
   }
 }
 
-/* =========================
-   UTIL
-========================= */
 function compactAnswers(obj) {
   return Object.entries(obj)
     .filter(([_, v]) => v && String(v).trim() !== "")
@@ -112,13 +102,14 @@ function compactAnswers(obj) {
     .join("\n");
 }
 
-/* =========================
-   ROUTES
-========================= */
+/* get login*/
 app.get("/", (req, res) => res.render("login", { error: null }));
+
+
+/* get signup*/
 app.get("/signup", (req, res) => res.render("signup", { error: null }));
 
-/* ---------- SIGNUP ---------- */
+/* post signup */
 app.post("/signup", async (req, res) => {
   const { name, email, phone, college_name, course, password } = req.body;
 
@@ -144,7 +135,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-/* ---------- LOGIN ---------- */
+/* post */
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -162,18 +153,17 @@ app.post("/login", async (req, res) => {
   }
 });
 
-/* ---------- DASHBOARD ---------- */
+/*  DASHBOARD */
 app.get("/dashboard", isAuthenticated, (req, res) => {
   res.render("dashboard", { user: req.user });
 });
 
-/* ---------- ASSESSMENT ---------- */
+/*  ASSESSMENT */
 app.get("/assessment", isAuthenticated, (req, res) => {
   res.render("assessment");
 });
 app.post("/assessment", isAuthenticated, async (req, res) => {
   try {
-    // 1️⃣ Extract roadmapDuration separately
     const { roadmapDuration, ...answers } = req.body;
 
     if (!roadmapDuration) {
@@ -181,9 +171,7 @@ app.post("/assessment", isAuthenticated, async (req, res) => {
         analysis: "⚠ Please select a roadmap duration.",
       });
     }
-
-    // 2️⃣ Compact only question answers
-    const compacted = Object.entries(answers)
+    const compacted = Object.entries(answers)   //it is used to trim the answer in array format basically its makes the answer compactAnswers and convert it like key-value format..and remove the empty answers then convert it to string
       .filter(([_, v]) => v && String(v).trim() !== "")
       .map(([k, v]) => `${k}: ${v}`)
       .join("\n");
@@ -193,8 +181,6 @@ app.post("/assessment", isAuthenticated, async (req, res) => {
         analysis: "⚠ Please answer at least one question.",
       });
     }
-
-    // 3️⃣ Simple + controlled AI prompt
     const prompt = `
 You are a career guidance AI.
 
@@ -221,6 +207,11 @@ WEAK AREAS
 - point 1
 - point 2
 
+SOME PROJECTS IDEAS ACCORDING TO USER PROFILE
+1. Project name – short description
+2. Project name – short description
+3. Project name – short description
+
 CAREER OPTIONS
 1. Career name – short reason
 2. Career name – short reason
@@ -239,7 +230,7 @@ User Answers:
 ${compacted}
 `;
 
-    // 4️⃣ Call Groq
+  
     const completion = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [{ role: "user", content: prompt }],
@@ -250,7 +241,7 @@ ${compacted}
       completion.choices[0]?.message?.content ||
       "AI could not generate a response.";
 
-    // 5️⃣ Save assessment
+
     await Assessment.create({
       userId: req.user._id,
       answers,
@@ -258,7 +249,7 @@ ${compacted}
       aiAnalysis: analysis,
     });
 
-    // 6️⃣ Render result page
+    
     res.render("assessment-result", { analysis });
 
   } catch (err) {
@@ -270,15 +261,13 @@ ${compacted}
 });
 
 
-/* ---------- LOGOUT ---------- */
+/*  LOGOUT  */
 app.get("/logout", (req, res) => {
   res.clearCookie("token");
   res.redirect("/");
 });
 
-/* =========================
-   SERVER
-========================= */
+/*  SERVER*/
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 }); 
