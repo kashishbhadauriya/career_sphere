@@ -155,6 +155,14 @@ app.post("/login", async (req, res) => {
     res.render("login", { error: "Login error" });
   }
 });
+app.get("/privacy-policy", (req, res) => {
+  res.send("This is a student project. We collect basic user data only for authentication and personalized career guidance. No data is sold or shared.");
+});
+
+app.get("/terms", (req, res) => {
+  res.send("This application is for educational purposes only. No professional guarantees are made.");
+});
+
 
 /*  DASHBOARD */
 app.get("/dashboard", isAuthenticated, (req, res) => {

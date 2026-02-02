@@ -3,53 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Career Assessment | careerpathAI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AI Career Assessment | CareerSphere</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Synonym:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --surface: #f8f9fa;
+            --text-dark: #1a1a2e;
+            --text-light: #ffffff;
+            --text-muted: #6c757d;
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+            --border-radius: 16px;
+            --section-1: #667eea;
+            --section-2: #9333ea;
+            --section-3: #ec4899;
+            --section-4: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Synonym', -apple-system, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         @keyframes slideIn {
-            from { transform: translateX(-100%); opacity: 0; }
+            from { transform: translateX(-20px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
-        .section-card {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        .progress-bar {
-            transition: width 0.3s ease;
-        }
-
-        select, textarea {
-            transition: all 0.3s ease;
-        }
-
-        select:focus, textarea:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-        }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .card-hover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .emoji-icon {
-            font-size: 2rem;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes float {
@@ -57,76 +59,495 @@
             50% { transform: translateY(-10px); }
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-left h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .header-left p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .progress-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .progress-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            max-width: 1200px;
+            margin: -1rem auto 0;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .progress-wrapper {
+            background: white;
+            border-radius: 100px;
+            height: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Main Container */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border-left: 6px solid;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            opacity: 0.03;
+            border-radius: 50%;
+            transition: opacity 0.4s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-card:hover::before {
+            opacity: 0.06;
+        }
+
+        .section-card.section-1 {
+            border-left-color: var(--section-1);
+        }
+
+        .section-card.section-1::before {
+            background: radial-gradient(circle, var(--section-1), transparent);
+        }
+
+        .section-card.section-2 {
+            border-left-color: var(--section-2);
+        }
+
+        .section-card.section-2::before {
+            background: radial-gradient(circle, var(--section-2), transparent);
+        }
+
+        .section-card.section-3 {
+            border-left-color: var(--section-3);
+        }
+
+        .section-card.section-3::before {
+            background: radial-gradient(circle, var(--section-3), transparent);
+        }
+
+        .section-card.section-4 {
+            border-left-color: var(--section-4);
+        }
+
+        .section-card.section-4::before {
+            background: radial-gradient(circle, var(--section-4), transparent);
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
         .step-indicator {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
         }
 
-        .step-active {
+        .section-1 .step-indicator {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .step-inactive {
-            background: #e5e7eb;
-            color: #9ca3af;
+        .section-2 .step-indicator {
+            background: linear-gradient(135deg, #9333ea, #c026d3);
+            color: white;
+        }
+
+        .section-3 .step-indicator {
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            color: white;
+        }
+
+        .section-4 .step-indicator {
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+            color: white;
+        }
+
+        .section-header:hover .step-indicator {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .section-title {
+            flex: 1;
+        }
+
+        .section-title h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .section-emoji {
+            font-size: 3rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Form Field */
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .form-field label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            background: var(--surface);
+            color: var(--text-dark);
+            font-family: 'Synonym', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .form-field select:focus,
+        .form-field textarea:focus {
+            border-color: var(--gradient-start);
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+
+        .form-field select:hover,
+        .form-field textarea:hover {
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .form-field textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6;
+        }
+
+        /* Duration Selector */
+        .duration-selector {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .duration-selector label {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.25rem;
+        }
+
+        .duration-selector select {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            border: 2px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            background: var(--surface);
+            color: var(--text-dark);
+            font-family: 'Synonym', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .duration-selector select:focus {
+            border-color: var(--gradient-start);
+            background: white;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+            outline: none;
+        }
+
+        /* Submit Button */
+        .submit-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        .submit-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 4rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            border-radius: 100px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 16px 56px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-button:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 2rem 1.5rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .header-left h1 {
+                font-size: 2.25rem;
+            }
+
+            .header-left p {
+                font-size: 1rem;
+            }
+
+            .header-right {
+                text-align: center;
+            }
+
+            .progress-number {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 2rem 1.5rem;
+            }
+
+            .section-card {
+                padding: 2rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-emoji {
+                font-size: 2.5rem;
+                position: absolute;
+                top: 2rem;
+                right: 2rem;
+                opacity: 0.3;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .submit-button {
+                width: 100%;
+                justify-content: center;
+                padding: 1.25rem 2rem;
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen">
+<body>
 
     <!-- Header -->
-    <div class="gradient-bg text-white py-8 shadow-lg">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-4xl font-bold mb-2">🎯 AI Career Assessment</h1>
-                    <p class="text-indigo-100 text-lg">Discover your perfect tech career path in just 5 minutes</p>
-                </div>
-                <div class="hidden md:block">
-                    <div class="text-right">
-                        <div class="text-3xl font-bold" id="progress-percent">0%</div>
-                        <div class="text-sm text-indigo-100">Complete</div>
-                    </div>
-                </div>
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <h1>🎯 AI Career Assessment</h1>
+                <p>Discover your perfect tech career path in just 5 minutes</p>
+            </div>
+            <div class="header-right">
+                <div class="progress-number" id="progress-percent">0%</div>
+                <div class="progress-label">Complete</div>
             </div>
         </div>
-    </div>
+    </header>
 
     <!-- Progress Bar -->
-    <div class="max-w-6xl mx-auto px-6 -mt-3">
-        <div class="bg-white rounded-full h-3 shadow-lg overflow-hidden">
-            <div id="progress-bar" class="progress-bar gradient-bg h-full" style="width: 0%"></div>
+    <div class="progress-container">
+        <div class="progress-wrapper">
+            <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-6 py-10">
-        
-        <form action="/assessment" method="POST" class="space-y-8" id="assessment-form">
+    <!-- Main Content -->
+    <main>
+        <form action="/assessment" method="POST" id="assessment-form">
 
-            <div class="section-card card-hover bg-white rounded-2xl shadow-xl p-8 border-l-4 border-indigo-500">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="step-indicator step-active">1</div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800">Skills & Technical Knowledge</h2>
-                        <p class="text-gray-600">Tell us about your technical expertise</p>
+            <!-- Section 1: Skills & Technical Knowledge -->
+            <div class="section-card section-1">
+                <div class="section-header">
+                    <div class="step-indicator">1</div>
+                    <div class="section-title">
+                        <h2>Skills & Technical Knowledge</h2>
+                        <p>Tell us about your technical expertise</p>
                     </div>
-                    <span class="emoji-icon ml-auto">💻</span>
+                    <div class="section-emoji">💻</div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <!-- Question 1 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">1. Programming skill level?</label>
-                        <select name="q1"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>1. Programming skill level?</label>
+                        <select name="q1">
                             <option value="">Choose your level...</option>
                             <option>Complete Beginner (Never coded)</option>
                             <option>Beginner (Basic syntax, simple programs)</option>
@@ -137,10 +558,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 2 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">2. DSA knowledge strength?</label>
-                        <select name="q2"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>2. DSA knowledge strength?</label>
+                        <select name="q2">
                             <option value="">Choose your level...</option>
                             <option>Not Started (No DSA knowledge)</option>
                             <option>Basic (Arrays, Strings, Simple Loops)</option>
@@ -151,10 +571,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 3 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">3. Debugging proficiency?</label>
-                        <select name="q3"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>3. Debugging proficiency?</label>
+                        <select name="q3">
                             <option value="">Choose your level...</option>
                             <option>Weak (Struggle to find bugs)</option>
                             <option>Below Average (Need help often)</option>
@@ -165,10 +584,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 4 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">4. Most comfortable area?</label>
-                        <select name="q4"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>4. Most comfortable area?</label>
+                        <select name="q4">
                             <option value="">Choose area...</option>
                             <option>Frontend Web Development</option>
                             <option>Backend Web Development</option>
@@ -186,10 +604,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 5 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">5. Git & GitHub familiarity?</label>
-                        <select name="q5"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>5. Git & GitHub familiarity?</label>
+                        <select name="q5">
                             <option value="">Choose your level...</option>
                             <option>No Experience (Never used)</option>
                             <option>Basic (Clone, commit, push)</option>
@@ -200,10 +617,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 6 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">6. Database comfort level?</label>
-                        <select name="q6"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>6. Database comfort level?</label>
+                        <select name="q6">
                             <option value="">Choose your level...</option>
                             <option>None (No database knowledge)</option>
                             <option>Basic (SELECT, INSERT queries)</option>
@@ -215,10 +631,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 7 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">7. Math skills rating?</label>
-                        <select name="q7"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>7. Math skills rating?</label>
+                        <select name="q7">
                             <option value="">Choose your level...</option>
                             <option>Poor (Struggle with basic math)</option>
                             <option>Below Average (Can do basics only)</option>
@@ -229,10 +644,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 8 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">8. Machine Learning experience?</label>
-                        <select name="q8"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>8. Machine Learning experience?</label>
+                        <select name="q8">
                             <option value="">Choose your level...</option>
                             <option>No Experience (Never touched ML)</option>
                             <option>Beginner (Know concepts, no projects)</option>
@@ -244,10 +658,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 9 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">9. API comfort level?</label>
-                        <select name="q9"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>9. API comfort level?</label>
+                        <select name="q9">
                             <option value="">Choose your level...</option>
                             <option>No Knowledge (What's an API?)</option>
                             <option>Basic (Can use public APIs)</option>
@@ -259,10 +672,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 10 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">10. Cloud tech experience?</label>
-                        <select name="q10"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>10. Cloud tech experience?</label>
+                        <select name="q10">
                             <option value="">Choose your level...</option>
                             <option>None (No cloud experience)</option>
                             <option>Beginner (Deployed simple apps)</option>
@@ -277,21 +689,20 @@
             </div>
 
             <!-- Section 2: Interests & Working Preferences -->
-            <div class="section-card card-hover bg-white rounded-2xl shadow-xl p-8 border-l-4 border-purple-500">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="step-indicator step-active">2</div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800">Interests & Working Preferences</h2>
-                        <p class="text-gray-600">Help us understand what drives you</p>
+            <div class="section-card section-2">
+                <div class="section-header">
+                    <div class="step-indicator">2</div>
+                    <div class="section-title">
+                        <h2>Interests & Working Preferences</h2>
+                        <p>Help us understand what drives you</p>
                     </div>
-                    <span class="emoji-icon ml-auto">🎨</span>
+                    <div class="section-emoji">🎨</div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <!-- Question 11 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">11. Most interesting work type?</label>
-                        <select name="q11"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>11. Most interesting work type?</label>
+                        <select name="q11">
                             <option value="">Choose one...</option>
                             <option>Building Web Applications</option>
                             <option>Mobile App Development</option>
@@ -307,10 +718,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 12 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">12. What motivates you?</label>
-                        <select name="q12"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>12. What motivates you?</label>
+                        <select name="q12">
                             <option value="">Choose one...</option>
                             <option>High Salary & Financial Security</option>
                             <option>Learning & Skill Development</option>
@@ -325,10 +735,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 13 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">13. Preferred work style?</label>
-                        <select name="q13"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>13. Preferred work style?</label>
+                        <select name="q13">
                             <option value="">Choose one...</option>
                             <option>Creative & Free-flowing</option>
                             <option>Logical & Analytical</option>
@@ -340,10 +749,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 14 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">14. Team preference?</label>
-                        <select name="q14"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>14. Team preference?</label>
+                        <select name="q14">
                             <option value="">Choose one...</option>
                             <option>Work Alone (Solo projects)</option>
                             <option>Pair Programming</option>
@@ -355,10 +763,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 15 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">15. Ideal work environment?</label>
-                        <select name="q15"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>15. Ideal work environment?</label>
+                        <select name="q15">
                             <option value="">Choose one...</option>
                             <option>Fully Remote</option>
                             <option>Office-Based</option>
@@ -369,10 +776,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 16 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">16. Enjoy learning new tech?</label>
-                        <select name="q16"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>16. Enjoy learning new tech?</label>
+                        <select name="q16">
                             <option value="">Choose one...</option>
                             <option>Love it! (Always exploring)</option>
                             <option>Yes (Regularly learn new things)</option>
@@ -383,10 +789,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 17 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">17. Projects that excite you?</label>
-                        <select name="q17"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>17. Projects that excite you?</label>
+                        <select name="q17">
                             <option value="">Choose one...</option>
                             <option>E-commerce & Web Apps</option>
                             <option>Social Media Platforms</option>
@@ -402,10 +807,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 18 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">18. How do you handle challenges?</label>
-                        <select name="q18"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>18. How do you handle challenges?</label>
+                        <select name="q18">
                             <option value="">Choose one...</option>
                             <option>Avoid them (Prefer easier tasks)</option>
                             <option>Hesitant (Need encouragement)</option>
@@ -416,10 +820,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 19 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">19. Stress management level?</label>
-                        <select name="q19"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>19. Stress management level?</label>
+                        <select name="q19">
                             <option value="">Choose your level...</option>
                             <option>Poor (Easily overwhelmed)</option>
                             <option>Below Average (Struggle under pressure)</option>
@@ -430,10 +833,9 @@
                         </select>
                     </div>
 
-                    <!-- Question 20 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">20. Creativity level?</label>
-                        <select name="q20"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>20. Creativity level?</label>
+                        <select name="q20">
                             <option value="">Choose your level...</option>
                             <option>Low (Prefer following guidelines)</option>
                             <option>Below Average (Some creative thinking)</option>
@@ -447,21 +849,20 @@
             </div>
 
             <!-- Section 3: Career Goals & Intentions -->
-            <div class="section-card card-hover bg-white rounded-2xl shadow-xl p-8 border-l-4 border-pink-500">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="step-indicator step-active">3</div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800">Career Goals & Intentions</h2>
-                        <p class="text-gray-600">Share your aspirations and commitments</p>
+            <div class="section-card section-3">
+                <div class="section-header">
+                    <div class="step-indicator">3</div>
+                    <div class="section-title">
+                        <h2>Career Goals & Intentions</h2>
+                        <p>Share your aspirations and commitments</p>
                     </div>
-                    <span class="emoji-icon ml-auto">🚀</span>
+                    <div class="section-emoji">🚀</div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <!-- Questions 21-30 -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">21. Your dream role?</label>
-                        <select name="q21"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>21. Your dream role?</label>
+                        <select name="q21">
                             <option value="">Choose one...</option>
                             <option>Software Developer</option>
                             <option>ML Engineer</option>
@@ -471,9 +872,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">22. In 3 years, you'll be?</label>
-                        <select name="q22"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>22. In 3 years, you'll be?</label>
+                        <select name="q22">
                             <option value="">Choose one...</option>
                             <option>Big Tech Job</option>
                             <option>Freelancing</option>
@@ -482,9 +883,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">23. Weekly time commitment?</label>
-                        <select name="q23"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>23. Weekly time commitment?</label>
+                        <select name="q23">
                             <option value="">Choose one...</option>
                             <option>&lt; 5 hrs</option>
                             <option>5–10 hrs</option>
@@ -493,9 +894,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">24. Roadmap preference?</label>
-                        <select name="q24"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>24. Roadmap preference?</label>
+                        <select name="q24">
                             <option value="">Choose one...</option>
                             <option>Structured</option>
                             <option>Flexible</option>
@@ -503,9 +904,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">25. Tech career confidence?</label>
-                        <select name="q25"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>25. Tech career confidence?</label>
+                        <select name="q25">
                             <option value="">Choose your level...</option>
                             <option>Very Low</option>
                             <option>Low</option>
@@ -514,9 +915,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">26. Best learning mode?</label>
-                        <select name="q26"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>26. Best learning mode?</label>
+                        <select name="q26">
                             <option value="">Choose one...</option>
                             <option>Videos</option>
                             <option>Books</option>
@@ -525,9 +926,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">27. Competitive programming?</label>
-                        <select name="q27"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>27. Competitive programming?</label>
+                        <select name="q27">
                             <option value="">Choose one...</option>
                             <option>No</option>
                             <option>Sometimes</option>
@@ -536,9 +937,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">28. Speaking to clients?</label>
-                        <select name="q28"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>28. Speaking to clients?</label>
+                        <select name="q28">
                             <option value="">Choose one...</option>
                             <option>No</option>
                             <option>Maybe</option>
@@ -547,9 +948,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">29. Communication skills?</label>
-                        <select name="q29"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>29. Communication skills?</label>
+                        <select name="q29">
                             <option value="">Choose your level...</option>
                             <option>Poor</option>
                             <option>Average</option>
@@ -558,9 +959,9 @@
                         </select>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block font-semibold text-gray-700">30. Learning consistency?</label>
-                        <select name="q30"  class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-pink-500 focus:outline-none bg-gray-50">
+                    <div class="form-field">
+                        <label>30. Learning consistency?</label>
+                        <select name="q30">
                             <option value="">Choose one...</option>
                             <option>No</option>
                             <option>Sometimes</option>
@@ -572,63 +973,60 @@
             </div>
 
             <!-- Section 4: Personal Insights -->
-            <div class="section-card card-hover bg-white rounded-2xl shadow-xl p-8 border-l-4 border-green-500">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="step-indicator step-active">4</div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800">Write About Yourself</h2>
-                        <p class="text-gray-600">Share your unique perspective</p>
+            <div class="section-card section-4">
+                <div class="section-header">
+                    <div class="step-indicator">4</div>
+                    <div class="section-title">
+                        <h2>Write About Yourself</h2>
+                        <p>Share your unique perspective</p>
                     </div>
-                    <span class="emoji-icon ml-auto">✍️</span>
+                    <div class="section-emoji">✍️</div>
                 </div>
 
-                <div class="space-y-6">
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-2">Describe the work you enjoy the most:</label>
-                        <textarea name="pov1" rows="3"  class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none bg-gray-50" placeholder="Tell us what makes you excited about work..."></textarea>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Describe the work you enjoy the most:</label>
+                        <textarea name="pov1" rows="3" placeholder="Tell us what makes you excited about work..."></textarea>
                     </div>
 
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-2">What motivates you?</label>
-                        <textarea name="pov2" rows="3"  class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none bg-gray-50" placeholder="What drives you forward..."></textarea>
+                    <div class="form-field">
+                        <label>What motivates you?</label>
+                        <textarea name="pov2" rows="3" placeholder="What drives you forward..."></textarea>
                     </div>
 
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-2">Your biggest strengths:</label>
-                        <textarea name="pov3" rows="3"  class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none bg-gray-50" placeholder="What are you naturally good at..."></textarea>
+                    <div class="form-field">
+                        <label>Your biggest strengths:</label>
+                        <textarea name="pov3" rows="3" placeholder="What are you naturally good at..."></textarea>
                     </div>
 
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-2">Your biggest learning challenges:</label>
-                        <textarea name="pov4" rows="3"  class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none bg-gray-50" placeholder="What do you find difficult..."></textarea>
+                    <div class="form-field">
+                        <label>Your biggest learning challenges:</label>
+                        <textarea name="pov4" rows="3" placeholder="What do you find difficult..."></textarea>
                     </div>
 
-                    <div>
-                        <label class="block font-semibold text-gray-700 mb-2">Describe your dream career:</label>
-                        <textarea name="pov5" rows="4" required class="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:outline-none bg-gray-50" placeholder="Paint a picture of your ideal future..."></textarea>
+                    <div class="form-field" style="grid-column: 1 / -1;">
+                        <label>Describe your dream career:</label>
+                        <textarea name="pov5" rows="4" required placeholder="Paint a picture of your ideal future..."></textarea>
                     </div>
                 </div>
             </div>
-            <div class="mb-8">
-  <label class="block text-lg font-semibold mb-3 text-black">
-    ⏳ Choose your roadmap duration
-  </label>
 
-  <select name="roadmapDuration" required
-    class="w-full px-5 py-3 rounded-xl bg-gray-800 text-white border border-gray-600 focus:outline-none background-text:black focus:ring-2 focus:ring-indigo-500">
-    <option value="">Select duration</option>
-    <option value="3">3 Months (Quick Start)</option>
-    <option value="6">6 Months (Strong Foundation)</option>
-    <option value="12">12 Months (Job Ready)</option>
-    <option value="18">18 Months (Advanced Career)</option>
-    <option value="24">24 Months (Expert Level)</option>
-  </select>
-</div>
-
+            <!-- Duration Selector -->
+            <div class="duration-selector">
+                <label>⏳ Choose your roadmap duration</label>
+                <select name="roadmapDuration" required>
+                    <option value="">Select duration</option>
+                    <option value="3">3 Months (Quick Start)</option>
+                    <option value="6">6 Months (Strong Foundation)</option>
+                    <option value="12">12 Months (Job Ready)</option>
+                    <option value="18">18 Months (Advanced Career)</option>
+                    <option value="24">24 Months (Expert Level)</option>
+                </select>
+            </div>
 
             <!-- Submit Button -->
-            <div class="flex justify-center">
-                <button type="submit" class="gradient-bg text-white px-12 py-4 rounded-full text-lg font-bold shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3">
+            <div class="submit-container">
+                <button type="submit" class="submit-button">
                     <span>🎯</span>
                     <span>Get My Career Roadmap</span>
                     <span>→</span>
@@ -636,8 +1034,7 @@
             </div>
 
         </form>
-
-    </div>
+    </main>
 
     <script>
         // Progress tracking
@@ -680,6 +1077,3 @@
     </script>
 </body>
 </html>
-
-
-    
