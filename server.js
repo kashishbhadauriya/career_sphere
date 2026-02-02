@@ -1,10 +1,12 @@
 import dotenv from "dotenv";
+import helmet from "helmet";
 dotenv.config();
 console.log({
   MONGO_URI: !!process.env.MONGO_URI,
   JWT_SECRET: !!process.env.JWT_SECRET,
   GROQ_API_KEY: !!process.env.GROQ_API_KEY,
 });
+
 
 import express from "express";
 import mongoose from "mongoose";
@@ -37,6 +39,7 @@ const groq = new Groq({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");

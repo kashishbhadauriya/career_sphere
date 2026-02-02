@@ -17,6 +17,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "groq-sdk": "^0.37.0",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.5",
     "node-fetch": "^3.3.2",
