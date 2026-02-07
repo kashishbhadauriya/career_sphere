@@ -278,7 +278,6 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-/*  SERVER*/
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-}); 
+  console.log(`🚀 Server running on port ${PORT}`);
+});
