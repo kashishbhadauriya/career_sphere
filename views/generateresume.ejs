@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resume — <%= resume.fullName %></title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #e8e8e8;
+      padding: 40px 16px 60px;
+      font-size: 14px;
+      color: #1a1a1a;
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+    }
+
+    /* ── Top bar ── */
+    .top-bar {
+      background: #1a2744;
+      padding: 38px 48px 32px;
+      color: #fff;
+    }
+
+    .top-bar h1 {
+      font-family: 'EB Garamond', serif;
+      font-size: 34px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: #c0cfe8;
+    }
+
+    .contact-item svg {
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    /* ── Body layout ── */
+    .body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: #f4f6fb;
+      padding: 32px 24px;
+      border-right: 1px solid #e5e9f2;
+    }
+
+    .sidebar-section { margin-bottom: 28px; }
+
+    .sidebar-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #1a2744;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #1a2744;
+    }
+
+    .skill-tag {
+      display: inline-block;
+      background: #e2e8f6;
+      color: #1a2744;
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 3px;
+      margin: 3px 3px 0 0;
+      line-height: 1.4;
+    }
+
+    .sidebar p {
+      font-size: 12.5px;
+      color: #444;
+      line-height: 1.65;
+      white-space: pre-line;
+    }
+
+    /* ── Main ── */
+    .main {
+      padding: 32px 36px;
+    }
+
+    .section { margin-bottom: 26px; }
+
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #1a2744;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #1a2744;
+    }
+
+    .section p {
+      font-size: 13px;
+      color: #333;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    .objective-text {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.75;
+      font-style: italic;
+      border-left: 3px solid #1a2744;
+      padding-left: 14px;
+    }
+
+    /* ── Print button ── */
+    .print-area {
+      text-align: center;
+      padding: 28px;
+      background: #f4f6fb;
+      border-top: 1px solid #e5e9f2;
+    }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #1a2744;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 11px 28px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .print-btn:hover { background: #243660; }
+
+    /* ── Print styles ── */
+    @media print {
+      body { background: none; padding: 0; }
+      .page { box-shadow: none; }
+      .print-area { display: none; }
+    }
+
+    @media (max-width: 620px) {
+      .body { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid #e5e9f2; }
+      .top-bar { padding: 28px 24px; }
+      .main { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="top-bar">
+    <h1><%= resume.fullName %></h1>
+    <div class="contact-row">
+      <% if (resume.email) { %>
+      <span class="contact-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        <%= resume.email %>
+      </span>
+      <% } %>
+      <% if (resume.phone) { %>
+      <span class="contact-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.61 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.09 4.18 2 2 0 0 1 5.06 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <%= resume.phone %>
+      </span>
+      <% } %>
+      <% if (resume.linkedin) { %>
+      <span class="contact-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        <%= resume.linkedin %>
+      </span>
+      <% } %>
+      <% if (resume.github) { %>
+      <span class="contact-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        <%= resume.github %>
+      </span>
+      <% } %>
+      <% if (resume.portfolio) { %>
+      <span class="contact-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <%= resume.portfolio %>
+      </span>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Two-column body -->
+  <div class="body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <% if (resume.skills) { %>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Skills</div>
+        <%
+          const skillLines = resume.skills.split('\n').filter(s => s.trim());
+          skillLines.forEach(line => {
+            const parts = line.replace(/^[-•]\s*/, '').split(':');
+            if (parts.length > 1) {
+        %>
+          <div style="margin-bottom:10px;">
+            <div style="font-size:11px;font-weight:600;color:#1a2744;margin-bottom:4px;"><%= parts[0].trim() %></div>
+            <% parts[1].split(',').forEach(skill => { %>
+              <span class="skill-tag"><%= skill.trim() %></span>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <span class="skill-tag"><%= line.replace(/^[-•]\s*/, '').trim() %></span>
+        <% } }); %>
+      </div>
+      <% } %>
+
+      <% if (resume.certifications) { %>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Certifications</div>
+        <p><%= resume.certifications %></p>
+      </div>
+      <% } %>
+
+      <% if (resume.achievements) { %>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Achievements</div>
+        <p><%= resume.achievements %></p>
+      </div>
+      <% } %>
+
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+      <% if (resume.objective) { %>
+      <div class="section">
+        <div class="section-title">Profile</div>
+        <p class="objective-text"><%= resume.objective %></p>
+      </div>
+      <% } %>
+
+      <% if (resume.experience) { %>
+      <div class="section">
+        <div class="section-title">Work Experience</div>
+        <p><%= resume.experience %></p>
+      </div>
+      <% } %>
+
+      <% if (resume.education) { %>
+      <div class="section">
+        <div class="section-title">Education</div>
+        <p><%= resume.education %></p>
+      </div>
+      <% } %>
+
+      <% if (resume.projects) { %>
+      <div class="section">
+        <div class="section-title">Projects</div>
+        <p><%= resume.projects %></p>
+      </div>
+      <% } %>
+
+    </main>
+  </div>
+
+  <!-- Print button -->
+  <div class="print-area">
+    <button class="print-btn" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Download as PDF
+    </button>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -4,602 +4,407 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CareerSphere</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Synonym:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a1a2e;
             --secondary: #16213e;
-            --accent: #0f3460;
-            --highlight: #e94560;
-            --surface: #f8f9fa;
-            --text-dark: #1a1a2e;
-            --text-light: #ffffff;
-            --text-muted: #6c757d;
             --gradient-start: #667eea;
             --gradient-end: #764ba2;
+            --surface: #f5f6fa;
+            --text-dark: #1a1a2e;
+            --text-muted: #6c757d;
             --border-radius: 16px;
+            --gold: #f59e0b;
+            --gold-light: #fef3c7;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Synonym', -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             color: var(--text-dark);
-            line-height: 1.6;
             background: var(--surface);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
         @keyframes slideDown {
             from { transform: translateY(-100%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(20px, -20px) rotate(3deg); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
         }
 
-        .fade-in { 
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        .slide-in { 
-            animation: slideIn 0.6s ease-out;
-        }
-
-        /* Navigation */
+        /* NAV */
         nav {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            animation: slideDown 0.6s ease-out;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            animation: slideDown 0.5s ease-out;
+            position: sticky; top: 0; z-index: 100;
         }
-
         .nav-container {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 1.5rem 2rem;
+            padding: 1.25rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-icon {
-            font-size: 2.5rem;
-        }
-
+        .nav-logo { display: flex; align-items: center; gap: 0.9rem; }
+        .logo-icon { font-size: 2.2rem; }
         .logo-text h1 {
             font-family: 'DM Serif Display', serif;
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             font-weight: 400;
-            margin-bottom: 0.25rem;
         }
-
-        .logo-text p {
-            font-size: 0.75rem;
-            opacity: 0.85;
-            color: rgba(255, 255, 255, 0.8);
+        .logo-text p { font-size: 0.72rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-links { display: flex; gap: 0.25rem; }
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
-
-        .nav-user {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-info {
-            text-align: right;
-        }
-
-        .user-info p:first-child {
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-
-        .user-info p:last-child {
-            font-size: 0.75rem;
-            opacity: 0.85;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
+        .nav-link:hover { background: rgba(255,255,255,0.12); color: white; }
+        .nav-user { display: flex; align-items: center; gap: 0.75rem; }
+        .user-info { text-align: right; }
+        .user-info p:first-child { font-size: 0.9rem; font-weight: 600; }
+        .user-info p:last-child { font-size: 0.72rem; color: rgba(255,255,255,0.7); }
         .user-avatar {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1.1rem;
+            border: 2px solid rgba(255,255,255,0.3);
         }
 
-        /* Main Content */
+        /* MAIN */
         main {
             flex: 1;
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
             width: 100%;
             padding: 3rem 2rem;
         }
 
-        /* Welcome Section */
+        /* WELCOME */
         .welcome-section {
-            margin-bottom: 2.5rem;
-            animation: fadeIn 0.6s ease-out 0.1s both;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-out 0.1s both;
         }
-
         .welcome-section h2 {
             font-family: 'DM Serif Display', serif;
-            font-size: 3rem;
+            font-size: 2.6rem;
             color: var(--primary);
-            margin-bottom: 0.75rem;
             font-weight: 400;
+            margin-bottom: 0.5rem;
         }
+        .welcome-section p { font-size: 1.1rem; color: var(--text-muted); }
 
-        .welcome-section p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-        }
-
-        /* Trust Disclaimer */
+        /* DISCLAIMER */
         .trust-disclaimer {
-            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
-            border: 2px solid rgba(102, 126, 234, 0.2);
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            border: 1.5px solid rgba(102,126,234,0.2);
             border-radius: var(--border-radius);
-            padding: 1.75rem;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.6s ease-out 0.2s both;
-        }
-
-        .trust-disclaimer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .trust-disclaimer p {
-            font-size: 0.95rem;
+            padding: 1.25rem 1.75rem;
+            margin-bottom: 2.5rem;
+            font-size: 0.9rem;
             color: var(--text-dark);
-            line-height: 1.8;
-            position: relative;
-            z-index: 1;
+            line-height: 1.7;
+            animation: fadeIn 0.5s ease-out 0.15s both;
         }
+        .trust-disclaimer strong { color: var(--gradient-start); }
 
-        .trust-disclaimer strong {
-            color: var(--gradient-start);
-        }
-
-        /* Main Card */
-        .main-card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            margin-bottom: 3rem;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            transition: all 0.4s ease;
-            animation: slideIn 0.6s ease-out 0.3s both;
-        }
-
-        .main-card:hover {
-            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }
-
-        .main-card-content {
+        /* TWO COLUMN HERO */
+        .hero-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-        }
-
-        .card-left {
-            padding: 3rem;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
-            color: var(--gradient-start);
-            padding: 0.5rem 1.25rem;
-            border-radius: 100px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-left h3 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1.25rem;
-            font-weight: 400;
-            line-height: 1.2;
-        }
-
-        .card-left > p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 1.05rem;
-            line-height: 1.7;
-        }
-
-        .features-list {
-            list-style: none;
+            gap: 1.5rem;
             margin-bottom: 2.5rem;
         }
 
-        .features-list li {
-            padding: 0.75rem 0;
-            color: var(--text-dark);
-            font-size: 1rem;
+        /* HERO CARD BASE */
+        .hero-card {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            flex-direction: column;
+        }
+        .hero-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
         }
 
+        /* ASSESSMENT CARD */
+        .assessment-card { animation: fadeIn 0.5s ease-out 0.2s both; }
+        .assessment-card .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 2rem 2rem 1.5rem;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .assessment-card .card-header::before {
+            content: '';
+            position: absolute; top: -40%; right: -10%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+            border-radius: 50%;
+        }
+        .card-header-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 0.75rem;
+            animation: float 4s ease-in-out infinite;
+        }
+        .card-header h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 0.4rem;
+        }
+        .card-header p { font-size: 0.88rem; color: rgba(255,255,255,0.75); }
+
+        .card-body {
+            background: white;
+            padding: 1.75rem 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .features-list { list-style: none; margin-bottom: 1.75rem; flex: 1; }
+        .features-list li {
+            padding: 0.55rem 0;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--text-dark);
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .features-list li:last-child { border-bottom: none; }
         .features-list li::before {
             content: '✓';
             color: var(--gradient-start);
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 0.95rem;
+            flex-shrink: 0;
         }
 
-        .start-button {
+        .btn-primary {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 1.25rem 3rem;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
             background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
             color: white;
             border: none;
             border-radius: 100px;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
             text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 24px rgba(102,126,234,0.3);
+            width: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(102,126,234,0.4);
+        }
+
+        .time-note {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* RESUME CARD — GOLD THEME */
+        .resume-card { animation: fadeIn 0.5s ease-out 0.3s both; }
+        .resume-card .card-header {
+            background: linear-gradient(135deg, #92400e, #b45309);
+            padding: 2rem 2rem 1.5rem;
+            color: white;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
-
-        .start-button::before {
+        .resume-card .card-header::before {
             content: '';
+            position: absolute; top: -40%; left: -10%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .new-badge {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s;
+            top: 14px; right: 14px;
+            background: var(--gold);
+            color: #1a1a2e;
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 100px;
         }
 
-        .start-button:hover::before {
-            left: 100%;
-        }
-
-        .start-button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 56px rgba(102, 126, 234, 0.4);
-        }
-
-        .time-info {
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .time-info span {
-            display: block;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-        }
-
-        .card-right {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            padding: 3rem;
-            display: flex;
+        .btn-gold {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
             color: white;
-            position: relative;
-            overflow: hidden;
+            border: none;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 24px rgba(245,158,11,0.35);
+            width: 100%;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(245,158,11,0.5);
         }
 
-        .card-right::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .card-right-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .card-right-icon {
-            font-size: 6rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-        }
-
-        .card-right h4 {
+        /* FEATURES GRID */
+        .section-title {
             font-family: 'DM Serif Display', serif;
             font-size: 2rem;
-            margin-bottom: 0.75rem;
-            font-weight: 400;
-        }
-
-        .card-right p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 1rem;
-        }
-
-        /* Features Section */
-        .features-section h3 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.25rem;
             color: var(--primary);
-            margin-bottom: 2rem;
             font-weight: 400;
-            animation: fadeIn 0.6s ease-out 0.4s both;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.5s ease-out 0.35s both;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
         }
 
         .feature-card {
             background: white;
             border-radius: var(--border-radius);
-            padding: 2.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.75rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-
-        .feature-card::before {
+        .feature-card::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
+            top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
             transform: scaleX(0);
-            transition: transform 0.4s ease;
+            transition: transform 0.3s ease;
         }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-card:nth-child(1) {
-            animation: fadeIn 0.6s ease-out 0.5s both;
-        }
-
-        .feature-card:nth-child(2) {
-            animation: fadeIn 0.6s ease-out 0.6s both;
-        }
-
-        .feature-card:nth-child(3) {
-            animation: fadeIn 0.6s ease-out 0.7s both;
-        }
-
-        .feature-card:nth-child(4) {
-            animation: fadeIn 0.6s ease-out 0.8s both;
-        }
+        .feature-card:hover::after { transform: scaleX(1); }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+        .feature-card:nth-child(1) { animation: fadeIn 0.5s ease-out 0.4s both; }
+        .feature-card:nth-child(2) { animation: fadeIn 0.5s ease-out 0.45s both; }
+        .feature-card:nth-child(3) { animation: fadeIn 0.5s ease-out 0.5s both; }
+        .feature-card:nth-child(4) { animation: fadeIn 0.5s ease-out 0.55s both; }
 
         .feature-icon {
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            border-radius: 14px;
+            width: 56px; height: 56px;
+            border-radius: 12px;
             background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            color: white;
-            margin-bottom: 1.5rem;
-            transition: transform 0.4s ease;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 1.1rem;
+            transition: transform 0.3s;
         }
-
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-
+        .feature-card:hover .feature-icon { transform: scale(1.1) rotate(5deg); }
         .feature-card h4 {
             font-family: 'DM Serif Display', serif;
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
             font-weight: 400;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
+        .feature-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; }
 
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Footer */
+        /* FOOTER */
         footer {
             background: white;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            padding: 2.5rem 2rem;
-            margin-top: auto;
-            animation: fadeIn 0.6s ease-out 0.9s both;
+            border-top: 1px solid rgba(0,0,0,0.07);
+            padding: 2rem;
+            animation: fadeIn 0.5s ease-out 0.6s both;
         }
-
         .footer-content {
-            max-width: 1400px;
+            max-width: 1300px;
             margin: 0 auto;
-            text-align: center;
-        }
-
-        .footer-content > p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
             display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1.25rem;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-
+        .footer-left p { font-size: 0.85rem; color: var(--text-muted); }
+        .footer-links { display: flex; gap: 1.5rem; }
         .footer-links a {
             color: var(--gradient-start);
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--gradient-end);
-            text-decoration: underline;
-        }
-
-        .copyright {
             font-size: 0.85rem;
-            color: var(--text-muted);
+            font-weight: 500;
+            transition: color 0.2s;
         }
+        .footer-links a:hover { color: var(--gradient-end); }
 
-        /* Responsive Design */
         @media (max-width: 1024px) {
-            .main-card-content {
-                grid-template-columns: 1fr;
-            }
-
-            .card-right {
-                padding: 2.5rem;
-            }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 768px) {
-            .nav-container {
-                padding: 1rem 1.5rem;
-            }
-
-            .logo-text h1 {
-                font-size: 1.4rem;
-            }
-
-            .logo-text p {
-                font-size: 0.7rem;
-            }
-
-            .user-info {
-                display: none;
-            }
-
-            .user-avatar {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-
-            main {
-                padding: 2rem 1.5rem;
-            }
-
-            .welcome-section h2 {
-                font-size: 2.25rem;
-            }
-
-            .welcome-section p {
-                font-size: 1.05rem;
-            }
-
-            .trust-disclaimer {
-                padding: 1.5rem;
-            }
-
-            .card-left {
-                padding: 2rem;
-            }
-
-            .card-left h3 {
-                font-size: 2rem;
-            }
-
-            .card-right {
-                padding: 2rem;
-            }
-
-            .card-right-icon {
-                font-size: 4.5rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
+            .hero-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; }
+            .user-info { display: none; }
+            main { padding: 2rem 1.25rem; }
+            .welcome-section h2 { font-size: 2rem; }
+        }
+        @media (max-width: 480px) {
+            .features-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
+<!-- NAV -->
 <nav>
     <div class="nav-container">
         <div class="nav-logo">
@@ -609,19 +414,22 @@
                 <p>Your AI Career Companion</p>
             </div>
         </div>
-        <div class="nav-user">
-            <div class="user-info">
-                <p><%= user.name %></p>
-                <p><%= user.email %></p>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="/assessment" class="nav-link">Assessment</a>
+                <a href="/resume" class="nav-link">Resume Builder</a>
             </div>
-            <div class="user-avatar">
-                <%= user.name.charAt(0).toUpperCase() %>
+            <div class="nav-user">
+                <div class="user-info">
+                    <p><%= user.name %></p>
+                    <p><%= user.email %></p>
+                </div>
+                <div class="user-avatar"><%= user.name.charAt(0).toUpperCase() %></div>
             </div>
         </div>
     </div>
 </nav>
 
-<!-- MAIN -->
 <main>
 
     <!-- WELCOME -->
@@ -630,78 +438,79 @@
         <p>Ready to take the next step in your career journey?</p>
     </div>
 
-    <!-- TRUST DISCLAIMER -->
+    <!-- DISCLAIMER -->
     <div class="trust-disclaimer">
-        <p>
-            🔒 <strong>CareerSphere is a student-built educational platform.</strong><br>
-            This application provides AI-generated career guidance for learning purposes only.
-            We do not collect financial information, do not offer paid services,
-            and do not share user data with third parties.
-        </p>
+        🔒 <strong>CareerSphere is a student-built educational platform.</strong>
+        This application provides AI-generated career guidance for learning purposes only.
+        We do not collect financial information, do not offer paid services, and do not share user data with third parties.
     </div>
 
-    <!-- MAIN CARD -->
-    <div class="main-card">
-        <div class="main-card-content">
-            <div class="card-left">
-                <span class="badge">🎯 Get Started</span>
-                <h3>Discover Your Perfect Career Path</h3>
-                <p>
-                    Take our AI-powered assessment to uncover your strengths,
-                    interests, and ideal career matches with a personalized roadmap.
-                </p>
+    <!-- HERO: TWO CARDS -->
+    <div class="hero-grid">
 
+        <!-- Assessment Card -->
+        <div class="hero-card assessment-card">
+            <div class="card-header">
+                <span class="card-header-icon">🎯</span>
+                <h3>Career Assessment</h3>
+                <p>Discover your ideal career path with AI</p>
+            </div>
+            <div class="card-body">
                 <ul class="features-list">
-                    <li>Comprehensive assessment</li>
+                    <li>Comprehensive skill & interest analysis</li>
                     <li>AI-powered career matching</li>
                     <li>Personalized learning roadmap</li>
-                    <li>Skill gap analysis</li>
+                    <li>Skill gap identification</li>
                 </ul>
-
-                <a href="/assessment" class="start-button">
-                    Start Assessment →
-                </a>
-
-                <div class="time-info">
-                    ⏱️ Takes approximately 5–10 minutes
-                    <span>Your responses are used only to generate personalized career insights.</span>
-                </div>
-            </div>
-
-            <div class="card-right">
-                <div class="card-right-content">
-                    <div class="card-right-icon">🎯</div>
-                    <h4>Your Journey Starts Here</h4>
-                    <p>Explore your future with AI guidance</p>
-                </div>
+                <a href="/assessment" class="btn-primary">Start Assessment →</a>
+                <p class="time-note">⏱️ Takes approximately 5–10 minutes</p>
             </div>
         </div>
+
+        <!-- Resume Card -->
+        <div class="hero-card resume-card">
+            <div class="card-header">
+                <span class="new-badge">✨</span>
+                <span class="card-header-icon">📄</span>
+                <h3>Resume Builder</h3>
+                <p>Create a job-ready resume in minutes</p>
+            </div>
+            <div class="card-body">
+                <ul class="features-list">
+                    <li>Professional, ATS-friendly templates</li>
+                    <li>Fill-in-the-blank simple form</li>
+                    <li>Instant PDF download</li>
+                    <li>Tailored layout for any industry</li>
+                </ul>
+                <a href="/resume" class="btn-gold">Build My Resume →</a>
+                <p class="time-note">📝 Ready to download in under 5 minutes</p>
+            </div>
+        </div>
+
     </div>
 
     <!-- FEATURES -->
-    <div class="features-section">
-        <h3>What You'll Get</h3>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h4>Skill Analysis</h4>
-                <p>Comprehensive evaluation of your technical and soft skills</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h4>Career Matches</h4>
-                <p>Top 3 career paths tailored to your profile and goals</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🗺️</div>
-                <h4>Learning Roadmap</h4>
-                <p>Step-by-step plan to achieve your career objectives</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💡</div>
-                <h4>Expert Insights</h4>
-                <p>AI-powered recommendations based on industry trends</p>
-            </div>
+    <h3 class="section-title">What You'll Get</h3>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h4>Skill Analysis</h4>
+            <p>Comprehensive evaluation of your technical and soft skills</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h4>Career Matches</h4>
+            <p>Top career paths tailored to your profile and goals</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🗺️</div>
+            <h4>Learning Roadmap</h4>
+            <p>Step-by-step plan to achieve your career objectives</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📄</div>
+            <h4>Resume Builder</h4>
+            <p>Build a polished, professional resume ready for any job application</p>
         </div>
     </div>
 
@@ -710,12 +519,13 @@
 <!-- FOOTER -->
 <footer>
     <div class="footer-content">
-        <p>CareerSphere is an educational AI-based career guidance project.</p>
-        <div class="footer-links">
-            <a href="/privacy-policy">Privacy Policy</a>
-            <a href="/terms">Terms of Use</a>
+        <div class="footer-left">
+            <p>© 2026 CareerSphere. An educational AI career guidance project.</p>
         </div>
-        <p class="copyright">© 2026 CareerSphere. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="/assessment">Assessment</a>
+            <a href="/resume">Resume Builder</a>
+        </div>
     </div>
 </footer>
 

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 40px 16px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      color: #111;
+    }
+
+    .section { margin-bottom: 28px; }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    input, textarea {
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      border-radius: 7px;
+      padding: 10px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #1a1a1a;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s;
+      resize: vertical;
+    }
+    input:focus, textarea:focus {
+      border-color: #4f7ef7;
+      background: #fff;
+    }
+    input::placeholder, textarea::placeholder { color: #bbb; }
+    textarea { min-height: 100px; }
+
+    hr {
+      border: none;
+      border-top: 1px solid #f0f0f0;
+      margin: 28px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #2563eb;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s;
+    }
+    button:hover { background: #1d4ed8; }
+
+    @media (max-width: 500px) {
+      .container { padding: 24px 20px; }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Resume Builder</h1>
+
+  <form method="POST" action="/generateresume">
+
+    <div class="section">
+      <p class="section-title">Personal Details</p>
+      <div class="field"><label>Full Name</label><input type="text" name="fullName" placeholder="Jane Doe" required></div>
+      <div class="row">
+        <div class="field"><label>Email</label><input type="text" name="email" placeholder="jane@email.com" required></div>
+        <div class="field"><label>Phone</label><input type="text" name="phone" placeholder="+1 234 567 8900" required></div>
+        <div class="field"><label>LinkedIn</label><input type="text" name="linkedin" placeholder="linkedin.com/in/..."></div>
+        <div class="field"><label>GitHub</label><input type="text" name="github" placeholder="github.com/..."></div>
+      </div>
+      <div class="field"><label>Portfolio</label><input type="text" name="portfolio" placeholder="yoursite.com"></div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <p class="section-title">Career Objective</p>
+      <div class="field"><textarea name="objective" placeholder="A short summary of your professional goals…"></textarea></div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <p class="section-title">Education</p>
+      <div class="field"><textarea name="education" placeholder="Degree, Institution, Year, GPA…"></textarea></div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <p class="section-title">Experience</p>
+      <div class="field"><textarea name="experience" placeholder="Role, Company, Dates — key responsibilities and achievements…"></textarea></div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <p class="section-title">Projects</p>
+      <div class="field"><textarea name="projects" placeholder="Project name, description, technologies used…"></textarea></div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <p class="section-title">Skills</p>
+      <div class="field"><textarea name="skills" placeholder="Languages, frameworks, tools, soft skills…"></textarea></div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <p class="section-title">Certifications</p>
+      <div class="field"><textarea name="certifications" placeholder="Certification name, issuer, year…"></textarea></div>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <p class="section-title">Achievements</p>
+      <div class="field"><textarea name="achievements" placeholder="Awards, honors, recognitions…"></textarea></div>
+    </div>
+
+    <button type="submit">Generate Resume</button>
+
+  </form>
+</div>
+</body>
+</html>

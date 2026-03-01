@@ -4,6 +4,8 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
@@ -11,8 +13,11 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import Groq from "groq-sdk";
 
+// Robust path resolution for ES Modules on Vercel
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
-const __dirname = path.resolve();
 
 /* ================= ENV ================= */
 const {
@@ -32,6 +37,9 @@ if (!MONGO_URI || !JWT_SECRET || !GROQ_API_KEY) {
 const groq = new Groq({ apiKey: GROQ_API_KEY });
 
 /* ================= SECURITY ================= */
+// Essential for secure cookies on Vercel/Render
+app.set('trust proxy', 1);
+
 app.use(
   helmet({
     contentSecurityPolicy: false,
@@ -209,15 +217,91 @@ app.post("/assessment", isAuthenticated, async (req, res) => {
     }
 
     const prompt = `
-You are a career guidance AI.
-Create a ${roadmapDuration}-month roadmap.
+You are an expert career mentor.
 
-Use simple language.
-No emojis.
-No markdown.
+Based on the user's answers, create a clear, practical, and actionable ${roadmapDuration}-month career roadmap.
+
+IMPORTANT RULES:
+- Use simple and professional language.
+- Do not use emojis.
+- Do not use markdown formatting.
+- Keep points short and practical.
+- Make every month action-based.
+- Avoid long paragraphs.
+
+Format your response EXACTLY in this structure:
+
+CAREER DIRECTION:
+2-3 lines explaining recommended career path.
+
+STRENGTHS:
+- Point 1
+- Point 2
+- Point 3
+
+IMPROVEMENT AREAS:
+- Point 1
+- Point 2
+- Point 3
+
+MONTHLY ACTION PLAN:
+
+Month 1:
+- Task 1
+- Task 2
+- Task 3
+
+Month 2:
+- Task 1
+- Task 2
+- Task 3
+
+(Continue until ${roadmapDuration} months)
+
+KEY PROJECTS TO BUILD:
+Project 1:
+Name:
+What it does:
+Tech Stack:
+Why it matters:
+
+Project 2:
+Name:
+What it does:
+Tech Stack:
+Why it matters:
+
+Project 3:
+Name:
+What it does:
+Tech Stack:
+Why it matters:
+
+CERTIFICATIONS TO CONSIDER:
+- Certification 1
+- Certification 2
+
+SKILLS TO FOCUS ON:
+Technical:
+- Skill 1
+- Skill 2
+
+Soft Skills:
+- Skill 1
+- Skill 2
+
+INTERNSHIP STRATEGY:
+- Step 1
+- Step 2
+- Step 3
+
+FINAL ADVICE:
+Short and realistic career advice.
 
 User Answers:
 ${compacted}
+
+Make the roadmap clear, realistic, and aligned with current industry expectations.
 `;
 
     const completion = await groq.chat.completions.create({
@@ -246,16 +330,15 @@ ${compacted}
   }
 });
 
-/* Privacy & Terms */
-app.get("/privacy-policy", (req, res) => {
-  res.send(
-    "This is a student project. We collect basic data only for authentication and guidance. No data is sold."
-  );
+app.get("/resume", isAuthenticated, (req, res) => {
+  res.render("resume");
 });
 
-app.get("/terms", (req, res) => {
-  res.send("Educational project only. No professional guarantees.");
+app.post("/generateresume", isAuthenticated, (req, res) => {
+  res.render("generateresume", { resume: req.body });
 });
+
+
 
 /* Logout */
 app.get("/logout", (req, res) => {
