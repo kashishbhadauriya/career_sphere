@@ -4,6 +4,8 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
@@ -11,8 +13,11 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import Groq from "groq-sdk";
 
+// Robust path resolution for ES Modules on Vercel
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
-const __dirname = path.resolve();
 
 /* ================= ENV ================= */
 const {
@@ -32,6 +37,9 @@ if (!MONGO_URI || !JWT_SECRET || !GROQ_API_KEY) {
 const groq = new Groq({ apiKey: GROQ_API_KEY });
 
 /* ================= SECURITY ================= */
+// Essential for secure cookies on Vercel/Render
+app.set('trust proxy', 1);
+
 app.use(
   helmet({
     contentSecurityPolicy: false,
