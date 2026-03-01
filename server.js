@@ -216,6 +216,7 @@ app.post("/assessment", isAuthenticated, async (req, res) => {
       });
     }
 
+   
     const prompt = `
 You are an expert career mentor.
 
@@ -303,7 +304,6 @@ ${compacted}
 
 Make the roadmap clear, realistic, and aligned with current industry expectations.
 `;
-
     const completion = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [{ role: "user", content: prompt }],
@@ -330,6 +330,7 @@ Make the roadmap clear, realistic, and aligned with current industry expectation
   }
 });
 
+/* Privacy & Terms */
 app.get("/resume", isAuthenticated, (req, res) => {
   res.render("resume");
 });
@@ -337,8 +338,6 @@ app.get("/resume", isAuthenticated, (req, res) => {
 app.post("/generateresume", isAuthenticated, (req, res) => {
   res.render("generateresume", { resume: req.body });
 });
-
-
 
 /* Logout */
 app.get("/logout", (req, res) => {
