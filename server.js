@@ -37,7 +37,6 @@ if (!MONGO_URI || !JWT_SECRET || !GROQ_API_KEY) {
 const groq = new Groq({ apiKey: GROQ_API_KEY });
 
 /* ================= SECURITY ================= */
-// Essential for secure cookies on Vercel/Render
 app.set('trust proxy', 1);
 
 app.use(
@@ -216,12 +215,9 @@ app.post("/assessment", isAuthenticated, async (req, res) => {
       });
     }
 
-   
     const prompt = `
 You are an expert career mentor.
-
 Based on the user's answers, create a clear, practical, and actionable ${roadmapDuration}-month career roadmap.
-
 IMPORTANT RULES:
 - Use simple and professional language.
 - Do not use emojis.
@@ -231,78 +227,39 @@ IMPORTANT RULES:
 - Avoid long paragraphs.
 
 Format your response EXACTLY in this structure:
-
 CAREER DIRECTION:
 2-3 lines explaining recommended career path.
-
 STRENGTHS:
 - Point 1
 - Point 2
 - Point 3
-
 IMPROVEMENT AREAS:
 - Point 1
 - Point 2
 - Point 3
-
 MONTHLY ACTION PLAN:
-
 Month 1:
 - Task 1
 - Task 2
 - Task 3
-
-Month 2:
-- Task 1
-- Task 2
-- Task 3
-
 (Continue until ${roadmapDuration} months)
-
 KEY PROJECTS TO BUILD:
 Project 1:
 Name:
-What it does:
-Tech Stack:
-Why it matters:
-
-Project 2:
-Name:
-What it does:
-Tech Stack:
-Why it matters:
-
-Project 3:
-Name:
-What it does:
-Tech Stack:
-Why it matters:
-
+What it does:Tech Stack:Why it matters:
 CERTIFICATIONS TO CONSIDER:
 - Certification 1
-- Certification 2
-
 SKILLS TO FOCUS ON:
 Technical:
 - Skill 1
-- Skill 2
-
 Soft Skills:
 - Skill 1
-- Skill 2
-
 INTERNSHIP STRATEGY:
 - Step 1
-- Step 2
-- Step 3
-
 FINAL ADVICE:
 Short and realistic career advice.
-
 User Answers:
 ${compacted}
-
-Make the roadmap clear, realistic, and aligned with current industry expectations.
 `;
     const completion = await groq.chat.completions.create({
       model: "llama-3.1-8b-instant",
@@ -310,9 +267,7 @@ Make the roadmap clear, realistic, and aligned with current industry expectation
       temperature: 0.7,
     });
 
-    const analysis =
-      completion.choices[0]?.message?.content ||
-      "AI could not generate a response.";
+    const analysis = completion.choices[0]?.message?.content || "AI could not generate a response.";
 
     await Assessment.create({
       userId: req.user._id,
@@ -330,13 +285,16 @@ Make the roadmap clear, realistic, and aligned with current industry expectation
   }
 });
 
-/* Privacy & Terms */
+/* Resume Builder Form */
 app.get("/resume", isAuthenticated, (req, res) => {
   res.render("resume");
 });
 
+/* Generate and Display Resume */
 app.post("/generateresume", isAuthenticated, (req, res) => {
-  res.render("generateresume", { resume: req.body });
+  // Ensure 'resume' is never undefined even if the body is empty
+  const resumeData = req.body || {}; 
+  res.render("generateresume", { resume: resumeData });
 });
 
 /* Logout */
@@ -346,6 +304,10 @@ app.get("/logout", (req, res) => {
 });
 
 /* ================= SERVER ================= */
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+if (NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`🚀 Local Server running on port ${PORT}`);
+  });
+}
+
+export default app;
